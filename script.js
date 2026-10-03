@@ -1,52 +1,72 @@
-// Switch Navigation Tabs
+// SUPABASE CONFIGURATION
+const SUPABASE_URL = 'https://cxzftptwawicdwrzvpki.supabase.co/rest/v1/';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4emZ0cHR3YXdpY2R3cnp2cGtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwNTA0NDAsImV4cCI6MjEwNjYyNjQ0MH0.baRfrSG032zTZEt1AtMNLYfn7GKmMJjN3Nju9PBwNBw';
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+// Tab Navigation Function
 function switchTab(event, tabId) {
-    const contents = document.querySelectorAll('.tab-content');
-    contents.forEach(content => content.classList.remove('active'));
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
 
     const navBtns = document.querySelectorAll('.ufc-nav-btn');
     navBtns.forEach(btn => btn.classList.remove('active'));
 
-    if (tabId === 'upcoming' || tabId === 'past') {
-        const eventsBtn = document.querySelector('.events-hover-btn');
-        if (eventsBtn) eventsBtn.classList.add('active');
-    } else if (event && event.target && event.target.classList.contains('ufc-nav-btn')) {
-        event.target.classList.add('active');
+    const selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
     }
 
-    const targetSection = document.getElementById(tabId);
-    if (targetSection) {
-        targetSection.classList.add('active');
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+    }
+
+    if (tabId === 'roster') {
+        fetchRoster();
     }
 }
 
-// Toggle Dropdown Fight Card Details
-function toggleCardDetails(cardId, btnElement) {
-    const cardDetails = document.getElementById(cardId);
-    if (cardDetails) {
-        cardDetails.classList.toggle('open');
-        if (btnElement) {
-            btnElement.textContent = cardDetails.classList.contains('open') ? 'HIDE CARD' : 'FIGHT CARD';
+// Toggle Fight Card Details
+function toggleCardDetails(cardId, buttonElem) {
+    const card = document.getElementById(cardId);
+    if (card) {
+        if (card.style.display === 'block') {
+            card.style.display = 'none';
+            buttonElem.textContent = 'FIGHT CARD';
+        } else {
+            card.style.display = 'block';
+            buttonElem.textContent = 'HIDE CARD';
         }
     }
 }
 
-// Matchup Carousel Arrow Navigation
-const matchups = {
-    'ama001': ['TBD VS TBD', 'MAIN CARD #1 vs MAIN CARD #2', 'PRELIM #1 vs PRELIM #2'],
-    'vtc001': ['TBD VS TBD', 'CO-MAIN TITLE BOUT', 'HEAVYWEIGHT CONTENDER BOUT']
-};
+// Fetch Active Roster from Supabase
+async function fetchRoster() {
+    const rosterContainer = document.getElementById('roster-list');
+    if (!supabaseClient) {
+        rosterContainer.innerHTML = `<div class="info-card"><p style="text-align: center; color: #666;">Database not connected.</p></div>`;
+        return;
+    }
 
-let currentMatchupIndices = {
-    'ama001': 0,
-    'vtc001': 0
-};
+    const { data: profiles, error } = await supabaseClient
+        .from('profiles')
+        .select('*');
 
-function nextMatchup(eventId) {
-    currentMatchupIndices[eventId] = (currentMatchupIndices[eventId] + 1) % matchups[eventId].length;
-    document.getElementById(`${eventId}-title`).textContent = matchups[eventId][currentMatchupIndices[eventId]];
+    if (error || !profiles || profiles.length === 0) {
+        rosterContainer.innerHTML = `<div class="info-card"><p style="text-align: center; color: #666;">No active fighters registered yet.</p></div>`;
+        return;
+    }
+
+    rosterContainer.innerHTML = profiles.map(fighter => `
+        <div class="info-card" style="margin-bottom: 15px;">
+            <h3>${fighter.username}</h3>
+            <p><strong>Weight Class:</strong> ${fighter.weight_class || 'N/A'}</p>
+            <p><strong>Stance:</strong> ${fighter.stance || 'Orthodox'}</p>
+            <p><strong>Record:</strong> ${fighter.record || '0-0-0'}</p>
+        </div>
+    `).join('');
 }
 
-function prevMatchup(eventId) {
-    currentMatchupIndices[eventId] = (currentMatchupIndices[eventId] - 1 + matchups[eventId].length) % matchups[eventId].length;
-    document.getElementById(`${eventId}-title`).textContent = matchups[eventId][currentMatchupIndices[eventId]];
-}
+// Load roster on initial page launch
+document.addEventListener('DOMContentLoaded', () => {
+    fetchRoster();
+});

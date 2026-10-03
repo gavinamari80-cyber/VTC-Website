@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Thrill Championship</title>
+    <!-- Google Fonts: Barlow Condensed (headlines) & Roboto (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@1,600&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root{--red:#d20a0a;--grey:#f2f2f2;--line:#d9d9d9;--muted:#5f5f5f;--display:'Barlow Condensed','Arial Narrow',sans-serif;--body:'Roboto',Arial,sans-serif}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#fff;color:#000;font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+        button{font-family:inherit}
+        :focus-visible{outline:3px solid var(--red);outline-offset:2px}
+
+        /* HEADER */
+        .ufc-header{background:#fff;border-bottom:1px solid #000;position:sticky;top:0;z-index:1000}
+        .header-container{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 25px;height:72px}
+        .nav-left,.nav-right{display:flex;align-items:center;gap:28px;flex:1}
+        .nav-right{justify-content:flex-end}
+        .ufc-nav-btn,.ufc-nav-link{background:none;border:none;color:#000;font:700 19px var(--display);letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;padding:25px 0;position:relative;text-decoration:none}
+        .ufc-nav-btn::after,.ufc-nav-link::after{content:'';position:absolute;left:0;bottom:0;width:100%;height:4px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+        .ufc-nav-btn:hover::after,.ufc-nav-link:hover::after,.ufc-nav-btn.active::after,.events-hover-btn.active::after{transform:scaleX(1)}
+        .nav-item-dropdown{display:inline-block}
+        .subnav-dropdown{display:none;position:absolute;top:100%;left:0;right:0;background:#ebebeb;z-index:1100;flex-direction:row;gap:56px;padding:0 25px 0 max(25px,calc((100vw - 1400px)/2 + 25px));box-shadow:0 6px 12px rgba(0,0,0,.08)}
+        .nav-item-dropdown:hover .subnav-dropdown,.nav-item-dropdown:focus-within .subnav-dropdown{display:flex}
+        .subnav-btn{background:none;border:none;color:#a3a3a3;font:700 18px var(--display);letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:22px 0;text-align:left;transition:color .15s}
+        .subnav-btn:hover,.subnav-btn:focus-visible{color:#000}
+        .nav-item-dropdown:hover .events-hover-btn,.nav-item-dropdown:focus-within .events-hover-btn{color:var(--red)}
+        .nav-item-dropdown:hover .events-hover-btn::after,.nav-item-dropdown:focus-within .events-hover-btn::after{transform:scaleX(1)}
+        .logo-center{display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .logo-img{max-height:42px;width:auto;display:block}
+
+        /* LAYOUT */
+        .container{max-width:1200px;width:100%;margin:40px auto 64px;padding:0 20px;flex:1}
+        .tab-content{display:none}
+        .tab-content.active{display:block}
+        h2.section-title{font:800 clamp(40px,6vw,64px)/1 var(--display);text-transform:uppercase;margin-bottom:32px;padding-bottom:16px;position:relative}
+        h2.section-title::after{content:'';position:absolute;left:0;bottom:0;width:72px;height:6px;background:var(--red)}
+
+        /* HERO (full-bleed black with red slash) */
+        .hero-banner{position:relative;width:100vw;margin:-40px 0 48px calc(50% - 50vw);background:#000;color:#fff;overflow:hidden;
+            padding:100px max(20px,calc((100vw - 1200px)/2 + 20px)) 92px}
+        .hero-banner::after{content:'';position:absolute;top:0;bottom:0;right:-6%;width:30%;background:var(--red);transform:skewX(-18deg)}
+        .hero-banner>*{position:relative;z-index:1}
+        .hero-banner h1{font:800 clamp(56px,11vw,140px)/.88 var(--display);text-transform:uppercase;letter-spacing:-1px;margin-bottom:20px}
+        .tagline{font:500 18px/1.5 var(--body);color:#ddd;max-width:460px;margin-bottom:36px}
+        .hero-buttons{display:flex;gap:14px;flex-wrap:wrap}
+        .hero-btn{padding:14px 32px;font:700 20px var(--display);letter-spacing:1.5px;cursor:pointer;text-decoration:none;text-transform:uppercase;border:2px solid var(--red);transition:background .2s,color .2s,border-color .2s}
+        .hero-btn.primary{background:var(--red);color:#fff}
+        .hero-btn.primary:hover{background:#fff;color:#000;border-color:#fff}
+        .hero-btn.secondary{background:#000;color:#fff;border-color:#fff}
+        .hero-btn.secondary:hover{background:#fff;color:#000}
+
+        /* INFO CARD */
+        .info-card{background:var(--grey);border-left:6px solid var(--red);padding:32px 36px}
+        .info-card h3{font:800 34px var(--display);text-transform:uppercase;margin-bottom:12px}
+        .info-card p{line-height:1.7;color:#222;font-size:16px;max-width:80ch}
+
+        /* EVENTS */
+        .events-list-container{display:flex;flex-direction:column;gap:20px}
+        .ufc-event-card{background:#fff;border:1px solid var(--line);border-left:6px solid #000;transition:border-left-color .2s}
+        .ufc-event-card:hover{border-left-color:var(--red)}
+        .ufc-event-row{display:flex;align-items:center;padding:22px 28px;gap:26px}
+        .event-logo-col{width:150px;display:flex;justify-content:center;flex-shrink:0}
+        .event-badge{width:120px;color:#000}
+        .badge-logo{width:120px;height:auto;display:block}
+        .badge-word{display:block;width:120px;height:56px}
+        .badge-word text{font:italic 800 66px 'Barlow Condensed','Arial Narrow',sans-serif;fill:#000}
+        .badge-sub-row{display:flex;align-items:flex-start;margin:10px 0 0 -6px}
+        .badge-rule{flex:none;width:45px;height:5px;background:#000;margin-top:4px}
+        .badge-num{margin-left:1px;font:italic 600 31px/1 'Barlow',var(--display);letter-spacing:1px;white-space:nowrap}
+        .badge-num.long{font-size:18px;margin-top:3px;letter-spacing:.5px}
+        .fighter-carousel-col{display:flex;align-items:center;gap:10px;width:290px;flex-shrink:0}
+        .arrow-btn{background:#fff;border:1px solid #000;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;flex-shrink:0;transition:background .2s,color .2s}
+        .arrow-btn:hover{background:#000;color:#fff}
+        .matchup-stage{display:flex;align-items:flex-end;justify-content:center;height:110px;width:100%;border-bottom:3px solid #000}
+        .fighter-avatar{width:95px;height:100%;display:flex;align-items:flex-end;justify-content:center}
+        .fighter-avatar.f1{margin-right:-10px}
+        .fighter-avatar.f2{margin-left:-10px}
+        .event-info-col{flex:1;padding:0 10px}
+        .event-date{font:700 14px var(--body);letter-spacing:.8px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+        .bout-title{font:800 clamp(34px,4vw,48px)/1 var(--display);text-transform:uppercase;margin-bottom:10px}
+        .event-venue,.event-location{font-size:14px;color:var(--muted);line-height:1.4}
+        .event-info-col .event-date{order:-1}
+        .event-actions-col{display:flex;flex-direction:column;gap:10px;width:170px;flex-shrink:0}
+        .action-btn-outline{background:#fff;border:2px solid #000;color:#000;padding:10px;font:700 18px var(--display);letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;width:100%;transition:background .2s,color .2s,border-color .2s}
+        .action-btn-outline:first-child{background:var(--red);border-color:var(--red);color:#fff}
+        .action-btn-outline:hover{background:#000;border-color:#000;color:#fff}
+        .event-card-details{display:none;background:var(--grey);padding:24px 28px}
+        .event-card-details.open{display:block}
+        .card-details-inner h4{font:800 26px var(--display);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:3px solid #000}
+        .detail-match{padding:10px 0;font-size:15px;display:flex;gap:15px;border-bottom:1px solid var(--line)}
+        .detail-match:last-child{border-bottom:none}
+        .detail-match .m-type{font:700 19px var(--display);letter-spacing:1px;color:var(--red);width:160px;flex-shrink:0}
+
+        /* RANKINGS */
+        .divisions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+        .division-block{min-width:0}
+        .division-label{font:700 15px var(--display);letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:22px}
+        .champ-name{font:800 30px/1.05 var(--display);text-transform:uppercase;margin-bottom:14px;min-height:32px}
+        .champ-tag{font:700 13px var(--display);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+        .champ-photo{height:170px;display:flex;align-items:flex-end;justify-content:flex-end;border-bottom:1px solid var(--line);margin-top:6px;overflow:hidden}
+        .champ-photo svg{height:100%;width:auto;display:block}
+        .rank-list{list-style:none;padding-top:20px}
+        .rank-item{display:flex;align-items:center;height:36px;font-size:14px;color:#333}
+        .rank-item b{font:800 15px var(--display);color:#000;width:42px;flex-shrink:0}
+        .rank-item span{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.3px}
+
+        /* WATCH */
+        .watch-hero-container{display:flex;align-items:stretch;background:#fff;border:1px solid var(--line)}
+        .watch-graphic-col{flex:1;background:linear-gradient(115deg,#000 0 64%,var(--red) 64% 100%);display:flex;align-items:center;justify-content:center;min-height:380px;padding:30px}
+        .watch-fighters-stage{display:flex;align-items:center;justify-content:center;gap:20px;width:100%}
+        .watch-fighter-img{width:180px;height:260px;display:flex;align-items:flex-end;justify-content:center}
+        .watch-vs-badge{font:800 italic 68px var(--display);color:#fff;letter-spacing:2px}
+        .watch-info-col{flex:1;padding:44px 50px;display:flex;flex-direction:column;justify-content:center}
+        .watch-event-title{font:800 clamp(48px,6vw,80px)/.9 var(--display);text-transform:uppercase;margin-bottom:18px}
+        .watch-event-meta{font:700 14px var(--body);letter-spacing:.8px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+        .watch-event-desc{font-size:16px;color:#333;line-height:1.6;margin-bottom:32px}
+        .watch-how-title{font:800 26px var(--display);text-transform:uppercase;margin-bottom:14px}
+        .watch-platform-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border:2px solid #000;padding:16px 20px}
+        .discord-brand{display:flex;align-items:center;gap:10px;font:700 24px var(--display);color:#5865F2;letter-spacing:1.5px}
+        .watch-btn-red{background:var(--red);color:#fff;padding:14px 28px;font:700 20px var(--display);letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;transition:background .2s}
+        .watch-btn-red:hover{background:#000}
+
+        /* FOOTER */
+        .site-footer{background:#000;color:#fff;padding:36px 25px;border-top:6px solid var(--red)}
+        .footer-inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+        .footer-name{font:800 26px var(--display);text-transform:uppercase;letter-spacing:1px}
+        .footer-link{color:#fff;font:700 18px var(--display);letter-spacing:1.2px;text-transform:uppercase;text-decoration:none;border-bottom:3px solid var(--red);padding-bottom:2px}
+        .footer-link:hover{color:var(--red)}
+
+        /* RESPONSIVE */
+        @media (max-width:900px){
+            .ufc-event-row{flex-direction:column;align-items:flex-start}
+            .fighter-carousel-col{width:100%;justify-content:center}
+            .event-actions-col{width:100%;flex-direction:row}
+            .watch-hero-container{flex-direction:column}
+            .divisions-grid{grid-template-columns:repeat(2,1fr)}
+            .watch-info-col{padding:30px 20px}
+        }
+        @media (max-width:700px){
+            .header-container{height:auto;flex-wrap:wrap;justify-content:center;padding:8px 12px}
+            .logo-center{order:-1;width:100%;padding:6px 0}
+            .nav-left,.nav-right{flex:initial;gap:16px}
+            .subnav-dropdown{padding-left:12px;gap:28px}
+            .ufc-nav-btn,.ufc-nav-link{font-size:17px;padding:10px 0}
+            .hero-banner{padding-top:64px;padding-bottom:56px}
+            .hero-banner::after{width:14%}
+            .divisions-grid{grid-template-columns:1fr}
+        }
+        @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+    </style>
+</head>
+<body>
+
+    <!-- UFC-Style Navigation Header -->
+    <header class="ufc-header">
+        <div class="header-container">
+            
+            <!-- Left Navigation Links -->
+            <nav class="nav-left">
+                <button class="ufc-nav-btn active" onclick="switchTab(event, 'home')">HOME</button>
+                
+                <!-- EVENTS DROPDOWN / HOVER CONTAINER -->
+                <div class="nav-item-dropdown">
+                    <button class="ufc-nav-btn events-hover-btn">EVENTS</button>
+
+                    <!-- Sub-Navigation Dropdown on Hover -->
+                    <div class="subnav-dropdown">
+                        <button class="subnav-btn" onclick="switchTab(event, 'upcoming')">UPCOMING EVENTS</button>
+                        <button class="subnav-btn" onclick="switchTab(event, 'past')">PAST EVENTS</button>
+                    </div>
+                </div>
+
+                <button class="ufc-nav-btn" onclick="switchTab(event, 'rankings')">RANKINGS</button>
+                <button class="ufc-nav-btn" onclick="switchTab(event, 'roster')">ATHLETES</button>
+            </nav>
+
+            <!-- Center Logo Image -->
+            <div class="logo-center">
+                <img src="logo.png" alt="VTC Logo" class="logo-img">
+            </div>
+
+            <!-- Right Navigation Links -->
+            <nav class="nav-right">
+                <button class="ufc-nav-btn" onclick="switchTab(event, 'watch')">WATCH</button>
+                <a href="https://discord.gg/AbQ46hmtME" target="_blank" rel="noopener noreferrer" class="ufc-nav-link">CONNECT</a>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container">
+
+        <!-- HOME TAB (Default) -->
+        <section id="home" class="tab-content active">
+            <div class="hero-banner">
+                <h1>WELCOME TO VTC</h1>
+                <p class="tagline">The Premier Competitive League for Thrill of the Fight 2</p>
+                <div class="hero-buttons">
+                    <a href="https://discord.gg/AbQ46hmtME" target="_blank" rel="noopener noreferrer" class="hero-btn primary">
+                        JOIN OUR DISCORD
+                    </a>
+                    <button class="hero-btn secondary" onclick="switchTab(null, 'upcoming')">View next event</button>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>ABOUT VTC</h3>
+                <p>Welcome to VTC, the premier competitive league hub for <em>The Thrill of the Fight 2</em>. We bring structure to VR boxing by hosting weekly numbered fight nights complete with full match cards, undercards, and main events, alongside weekly amateur bouts for fighters building up their records. VTC features official leaderboards to track standings across active championship divisions, dedicated matchmaking channels, and an active community focused on high-level competition.</p>
+            </div>
+        </section>
+
+        <!-- WATCH TAB (Broadcasting View) -->
+        <section id="watch" class="tab-content">
+            <div class="watch-hero-container">
+                
+                <!-- Left Graphic Area -->
+                <div class="watch-graphic-col">
+                    <div class="watch-fighters-stage">
+                        <div class="watch-fighter-img">
+                            <svg viewBox="0 0 100 120" width="100%" height="100%">
+                                <circle cx="50" cy="35" r="22" fill="#e0e0e0"/>
+                                <path d="M 20 100 Q 50 60 80 100" fill="#e0e0e0"/>
+                            </svg>
+                        </div>
+                        <span class="watch-vs-badge">VS</span>
+                        <div class="watch-fighter-img">
+                            <svg viewBox="0 0 100 120" width="100%" height="100%">
+                                <circle cx="50" cy="35" r="22" fill="#cccccc"/>
+                                <path d="M 20 100 Q 50 60 80 100" fill="#cccccc"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Information & Stream Link Area -->
+                <div class="watch-info-col">
+                    <h1 class="watch-event-title">AMA 001</h1>
+                    <p class="watch-event-meta">TBD</p>
+                    <p class="watch-event-desc">Don't Miss A Moment Of AMA 001, Live From VTC Apex.</p>
+                    
+                    <h3 class="watch-how-title">WHERE TO WATCH:</h3>
+                    
+                    <div class="watch-platform-box">
+                        <div class="discord-brand">
+                            <svg width="28" height="22" viewBox="0 0 127.14 96.36" fill="#5865F2">
+                                <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.68,1.76,1.36,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,121.5,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.92,53.87,53,48.81,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.92,96.1,53,91.05,65.69,84.69,65.69Z"/>
+                            </svg>
+                            <span>DISCORD</span>
+                        </div>
+                        <a href="https://discord.gg/AbQ46hmtME" target="_blank" rel="noopener noreferrer" class="watch-btn-red">
+                            WATCH ON DISCORD
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- UPCOMING EVENTS TAB -->
+        <section id="upcoming" class="tab-content">
+            <h2 class="section-title">UPCOMING EVENTS</h2>
+            
+            <div class="events-list-container">
+
+                <!-- EVENT 1: AMA 001 -->
+                <div class="ufc-event-card">
+                    <div class="ufc-event-row">
+                        
+                        <!-- Event Logo Column -->
+                        <div class="event-logo-col">
+                            <div class="event-badge">
+                                <svg class="badge-word" viewBox="0 0 120 56" role="img" aria-label="AMA"><text x="0" y="52" textLength="118" lengthAdjust="spacingAndGlyphs">AMA</text></svg>
+                                <div class="badge-sub-row"><span class="badge-rule"></span><span class="badge-num">001</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Fighter Matchup Carousel Column -->
+                        <div class="fighter-carousel-col">
+                            <button class="arrow-btn" title="Previous Bout" onclick="prevMatchup('ama001')">❮</button>
+                            
+                            <div class="matchup-stage">
+                                <div class="fighter-avatar f1">
+                                    <svg viewBox="0 0 100 120" width="100%" height="100%">
+                                        <circle cx="50" cy="35" r="22" fill="#d0d0d0"/>
+                                        <path d="M 20 100 Q 50 60 80 100" fill="#d0d0d0"/>
+                                    </svg>
+                                </div>
+                                <div class="fighter-avatar f2">
+                                    <svg viewBox="0 0 100 120" width="100%" height="100%">
+                                        <circle cx="50" cy="35" r="22" fill="#bcbcbc"/>
+                                        <path d="M 20 100 Q 50 60 80 100" fill="#bcbcbc"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <button class="arrow-btn" title="Next Bout" onclick="nextMatchup('ama001')">❯</button>
+                        </div>
+
+                        <!-- Event Info Column -->
+                        <div class="event-info-col">
+                            <h2 class="bout-title" id="ama001-title">TBD VS TBD</h2>
+                            <p class="event-date">TBD</p>
+                            <p class="event-venue">VTC Apex</p>
+                            <p class="event-location">Amateur Circuit #001</p>
+                        </div>
+
+                        <!-- Action Buttons Column -->
+                        <div class="event-actions-col">
+                            <button class="action-btn-outline" onclick="switchTab(null, 'watch')">HOW TO WATCH</button>
+                            <button class="action-btn-outline" onclick="toggleCardDetails('ama001-fullcard', this)">FIGHT CARD</button>
+                        </div>
+
+                    </div>
+
+                    <!-- Hidden Dropdown Fight Card -->
+                    <div id="ama001-fullcard" class="event-card-details">
+                        <div class="card-details-inner">
+                            <h4>AMA 001 FULL FIGHT CARD</h4>
+                            <div class="detail-match"><span class="m-type">MAIN EVENT:</span> <span>TBD vs TBD</span></div>
+                            <div class="detail-match"><span class="m-type">CO-MAIN EVENT:</span> <span>TBD vs TBD</span></div>
+                            <div class="detail-match"><span class="m-type">UNDERCARD #1:</span> <span>TBD vs TBD</span></div>
+                            <div class="detail-match"><span class="m-type">UNDERCARD #2:</span> <span>TBD vs TBD</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EVENT 2: VTC 001 -->
+                <div class="ufc-event-card">
+                    <div class="ufc-event-row">
+                        
+                        <!-- Event Logo Column -->
+                        <div class="event-logo-col">
+                            <div class="event-badge">
+                                <img class="badge-logo" src="logo.png" alt="VTC">
+                                <div class="badge-sub-row"><span class="badge-rule"></span><span class="badge-num">001</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Fighter Matchup Carousel Column -->
+                        <div class="fighter-carousel-col">
+                            <button class="arrow-btn" title="Previous Bout" onclick="prevMatchup('vtc001')">❮</button>
+                            
+                            <div class="matchup-stage">
+                                <div class="fighter-avatar f1">
+                                    <svg viewBox="0 0 100 120" width="100%" height="100%">
+                                        <circle cx="50" cy="35" r="22" fill="#d0d0d0"/>
+                                        <path d="M 20 100 Q 50 60 80 100" fill="#d0d0d0"/>
+                                    </svg>
+                                </div>
+                                <div class="fighter-avatar f2">
+                                    <svg viewBox="0 0 100 120" width="100%" height="100%">
+                                        <circle cx="50" cy="35" r="22" fill="#bcbcbc"/>
+                                        <path d="M 20 100 Q 50 60 80 100" fill="#bcbcbc"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <button class="arrow-btn" title="Next Bout" onclick="nextMatchup('vtc001')">❯</button>
+                        </div>
+
+                        <!-- Event Info Column -->
+                        <div class="event-info-col">
+                            <h2 class="bout-title" id="vtc001-title">TBD VS TBD</h2>
+                            <p class="event-date">TBD</p>
+                            <p class="event-venue">VTC Arena</p>
+                            <p class="event-location">Numbered Series #001</p>
+                        </div>
+
+                        <!-- Action Buttons Column -->
+                        <div class="event-actions-col">
+                            <button class="action-btn-outline" onclick="switchTab(null, 'watch')">HOW TO WATCH</button>
+                            <button class="action-btn-outline" onclick="toggleCardDetails('vtc001-fullcard', this)">FIGHT CARD</button>
+                        </div>
+
+                    </div>
+
+                    <!-- Hidden Dropdown Fight Card -->
+                    <div id="vtc001-fullcard" class="event-card-details">
+                        <div class="card-details-inner">
+                            <h4>VTC 001 CHAMPIONSHIP FIGHT CARD</h4>
+                            <div class="detail-match"><span class="m-type">MAIN EVENT:</span> <span>TBD vs TBD</span></div>
+                            <div class="detail-match"><span class="m-type">CO-MAIN EVENT:</span> <span>TBD vs TBD</span></div>
+                            <div class="detail-match"><span class="m-type">MAIN CARD #1:</span> <span>TBD vs TBD</span></div>
+                            <div class="detail-match"><span class="m-type">MAIN CARD #2:</span> <span>TBD vs TBD</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PAST CARDS TAB -->
+        <section id="past" class="tab-content">
+            <h2 class="section-title">PAST FIGHT CARDS</h2>
+            <div class="info-card">
+                <p style="text-align: center; color: #666666;">No completed fight cards yet.</p>
+            </div>
+        </section>
+
+        <!-- RANKINGS TAB -->
+        <section id="rankings" class="tab-content">
+            <h2 class="section-title">RANKINGS</h2>
+            <div class="divisions-grid">
+
+                <div class="division-block">
+                    <p class="division-label">Lightweight</p>
+                    <h3 class="champ-name">TBD</h3>
+                    <p class="champ-tag">Champion</p>
+                    <div class="champ-photo"><svg viewBox="0 0 200 170" aria-hidden="true"><circle cx="112" cy="62" r="34" fill="#d0d0d0"/><path d="M30 170 Q40 112 112 104 Q184 112 194 170Z" fill="#d0d0d0"/><path d="M52 170 L84 118 L112 150 L140 118 L172 170Z" fill="#111"/><path d="M84 170 L96 140 L128 140 L140 170Z" fill="#c9a227"/></svg></div>
+                    <ol class="rank-list"><li class="rank-item"><b>1</b><span>TBD</span></li><li class="rank-item"><b>2</b><span>TBD</span></li><li class="rank-item"><b>3</b><span>TBD</span></li><li class="rank-item"><b>4</b><span>TBD</span></li><li class="rank-item"><b>5</b><span>TBD</span></li><li class="rank-item"><b>6</b><span>TBD</span></li><li class="rank-item"><b>7</b><span>TBD</span></li><li class="rank-item"><b>8</b><span>TBD</span></li><li class="rank-item"><b>9</b><span>TBD</span></li><li class="rank-item"><b>10</b><span>TBD</span></li><li class="rank-item"><b>11</b><span>TBD</span></li><li class="rank-item"><b>12</b><span>TBD</span></li><li class="rank-item"><b>13</b><span>TBD</span></li><li class="rank-item"><b>14</b><span>TBD</span></li><li class="rank-item"><b>15</b><span>TBD</span></li></ol>
+                </div>
+
+                <div class="division-block">
+                    <p class="division-label">Welterweight</p>
+                    <h3 class="champ-name">TBD</h3>
+                    <p class="champ-tag">Champion</p>
+                    <div class="champ-photo"><svg viewBox="0 0 200 170" aria-hidden="true"><circle cx="112" cy="62" r="34" fill="#d0d0d0"/><path d="M30 170 Q40 112 112 104 Q184 112 194 170Z" fill="#d0d0d0"/><path d="M52 170 L84 118 L112 150 L140 118 L172 170Z" fill="#111"/><path d="M84 170 L96 140 L128 140 L140 170Z" fill="#c9a227"/></svg></div>
+                    <ol class="rank-list"><li class="rank-item"><b>1</b><span>TBD</span></li><li class="rank-item"><b>2</b><span>TBD</span></li><li class="rank-item"><b>3</b><span>TBD</span></li><li class="rank-item"><b>4</b><span>TBD</span></li><li class="rank-item"><b>5</b><span>TBD</span></li><li class="rank-item"><b>6</b><span>TBD</span></li><li class="rank-item"><b>7</b><span>TBD</span></li><li class="rank-item"><b>8</b><span>TBD</span></li><li class="rank-item"><b>9</b><span>TBD</span></li><li class="rank-item"><b>10</b><span>TBD</span></li><li class="rank-item"><b>11</b><span>TBD</span></li><li class="rank-item"><b>12</b><span>TBD</span></li><li class="rank-item"><b>13</b><span>TBD</span></li><li class="rank-item"><b>14</b><span>TBD</span></li><li class="rank-item"><b>15</b><span>TBD</span></li></ol>
+                </div>
+
+                <div class="division-block">
+                    <p class="division-label">Middleweight</p>
+                    <h3 class="champ-name">TBD</h3>
+                    <p class="champ-tag">Champion</p>
+                    <div class="champ-photo"><svg viewBox="0 0 200 170" aria-hidden="true"><circle cx="112" cy="62" r="34" fill="#d0d0d0"/><path d="M30 170 Q40 112 112 104 Q184 112 194 170Z" fill="#d0d0d0"/><path d="M52 170 L84 118 L112 150 L140 118 L172 170Z" fill="#111"/><path d="M84 170 L96 140 L128 140 L140 170Z" fill="#c9a227"/></svg></div>
+                    <ol class="rank-list"><li class="rank-item"><b>1</b><span>TBD</span></li><li class="rank-item"><b>2</b><span>TBD</span></li><li class="rank-item"><b>3</b><span>TBD</span></li><li class="rank-item"><b>4</b><span>TBD</span></li><li class="rank-item"><b>5</b><span>TBD</span></li><li class="rank-item"><b>6</b><span>TBD</span></li><li class="rank-item"><b>7</b><span>TBD</span></li><li class="rank-item"><b>8</b><span>TBD</span></li><li class="rank-item"><b>9</b><span>TBD</span></li><li class="rank-item"><b>10</b><span>TBD</span></li><li class="rank-item"><b>11</b><span>TBD</span></li><li class="rank-item"><b>12</b><span>TBD</span></li><li class="rank-item"><b>13</b><span>TBD</span></li><li class="rank-item"><b>14</b><span>TBD</span></li><li class="rank-item"><b>15</b><span>TBD</span></li></ol>
+                </div>
+
+                <div class="division-block">
+                    <p class="division-label">Heavyweight</p>
+                    <h3 class="champ-name">TBD</h3>
+                    <p class="champ-tag">Champion</p>
+                    <div class="champ-photo"><svg viewBox="0 0 200 170" aria-hidden="true"><circle cx="112" cy="62" r="34" fill="#d0d0d0"/><path d="M30 170 Q40 112 112 104 Q184 112 194 170Z" fill="#d0d0d0"/><path d="M52 170 L84 118 L112 150 L140 118 L172 170Z" fill="#111"/><path d="M84 170 L96 140 L128 140 L140 170Z" fill="#c9a227"/></svg></div>
+                    <ol class="rank-list"><li class="rank-item"><b>1</b><span>TBD</span></li><li class="rank-item"><b>2</b><span>TBD</span></li><li class="rank-item"><b>3</b><span>TBD</span></li><li class="rank-item"><b>4</b><span>TBD</span></li><li class="rank-item"><b>5</b><span>TBD</span></li><li class="rank-item"><b>6</b><span>TBD</span></li><li class="rank-item"><b>7</b><span>TBD</span></li><li class="rank-item"><b>8</b><span>TBD</span></li><li class="rank-item"><b>9</b><span>TBD</span></li><li class="rank-item"><b>10</b><span>TBD</span></li><li class="rank-item"><b>11</b><span>TBD</span></li><li class="rank-item"><b>12</b><span>TBD</span></li><li class="rank-item"><b>13</b><span>TBD</span></li><li class="rank-item"><b>14</b><span>TBD</span></li><li class="rank-item"><b>15</b><span>TBD</span></li></ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- ATHLETES TAB -->
+        <section id="roster" class="tab-content">
+            <h2 class="section-title">ACTIVE ROSTER</h2>
+            <div class="info-card">
+                <p style="text-align: center; color: #666666;">No active fighters registered yet. Join the Discord server to sign up for upcoming cards!</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <span class="footer-name">Virtual Thrill Championship</span>
+            <a class="footer-link" href="https://discord.gg/AbQ46hmtME" target="_blank" rel="noopener noreferrer">Join the Discord</a>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Switch Navigation Tabs
+        function switchTab(event, tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const navBtns = document.querySelectorAll('.ufc-nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+
+            if (tabId === 'upcoming' || tabId === 'past') {
+                const eventsBtn = document.querySelector('.events-hover-btn');
+                if (eventsBtn) eventsBtn.classList.add('active');
+            } else if (event && event.target && event.target.classList.contains('ufc-nav-btn')) {
+                event.target.classList.add('active');
+            }
+
+            const targetSection = document.getElementById(tabId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        }
+
+        // Toggle Dropdown Fight Card Details
+        function toggleCardDetails(cardId, btnElement) {
+            const cardDetails = document.getElementById(cardId);
+            if (cardDetails) {
+                cardDetails.classList.toggle('open');
+                if (btnElement) {
+                    btnElement.textContent = cardDetails.classList.contains('open') ? 'HIDE CARD' : 'FIGHT CARD';
+                }
+            }
+        }
+
+        // Matchup Carousel Navigation
+        const matchups = {
+            'ama001': ['TBD VS TBD', 'MAIN CARD #1 vs MAIN CARD #2', 'PRELIM #1 vs PRELIM #2'],
+            'vtc001': ['TBD VS TBD', 'CO-MAIN TITLE BOUT', 'HEAVYWEIGHT CONTENDER BOUT']
+        };
+
+        let currentMatchupIndices = {
+            'ama001': 0,
+            'vtc001': 0
+        };
+
+        function nextMatchup(eventId) {
+            currentMatchupIndices[eventId] = (currentMatchupIndices[eventId] + 1) % matchups[eventId].length;
+            document.getElementById(`${eventId}-title`).textContent = matchups[eventId][currentMatchupIndices[eventId]];
+        }
+
+        function prevMatchup(eventId) {
+            currentMatchupIndices[eventId] = (currentMatchupIndices[eventId] - 1 + matchups[eventId].length) % matchups[eventId].length;
+            document.getElementById(`${eventId}-title`).textContent = matchups[eventId][currentMatchupIndices[eventId]];
+        }
+    </script>
+</body>
+</html>

@@ -11,7 +11,7 @@
 								<link rel="preconnect" href="https://fonts.googleapis.com">
 									<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 										<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-											<link rel="stylesheet" href="styles.css?v=10">
+											<link rel="stylesheet" href="styles.css?v=12">
 </head>
 	<body>
 		<header class="ufc-header">
@@ -38,17 +38,14 @@
 				<nav class="nav-right" aria-label="Secondary">
 					<button class="ufc-nav-btn" onclick="switchTab(event, 'ad')">ADVERTISEMENT</button>
 					<button class="ufc-nav-btn" onclick="switchTab(event, 'watch')">WATCH</button>
-					<a href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer" class="ufc-nav-link">CONNECT</a>
+					<a href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer" class="ufc-nav-link">DISCORD</a>
+					<a href="https://www.youtube.com/channel/UCH1eR58BPr41l9e6GdY5rpg" target="_blank" rel="noopener noreferrer" class="ufc-nav-link">YOUTUBE</a>
 				</nav>
 			</div>
 		</header>
 
 		<div class="ticker-bar" aria-hidden="true">
 			<div class="ticker-track">
-				<span class="ticker-item">
-					<b>VTC</b> · LEAGUE LAUNCHING SOON
-				</span>
-				<span class="ticker-sep">◆</span>
 				<span class="ticker-item">
 					<span class="ticker-badge">SOON</span> AMA 001 · DATE TBD
 				</span>
@@ -58,10 +55,6 @@
 				</span>
 				<span class="ticker-sep">◆</span>
 				<span class="ticker-item">JOIN THE DISCORD TO SIGN UP FOR FIGHT NIGHTS</span>
-				<span class="ticker-sep">◆</span>
-				<span class="ticker-item">
-					<b>VTC</b> · LEAGUE LAUNCHING SOON
-				</span>
 				<span class="ticker-sep">◆</span>
 				<span class="ticker-item">
 					<span class="ticker-badge">SOON</span> AMA 001 · DATE TBD
@@ -135,6 +128,16 @@
 								<span>DISCORD</span>
 							</div>
 							<a href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer" class="watch-btn-red">WATCH ON DISCORD</a>
+						</div>
+						<div class="watch-platform-box">
+							<div class="platform-brand platform-yt">
+								<svg width="28" height="20" viewBox="0 0 28 20" aria-hidden="true">
+									<rect width="28" height="20" rx="4" fill="#FF0000"/>
+									<path d="M11.5 5.5v9l7.5-4.5-7.5-4.5z" fill="#fff"/>
+								</svg>
+								<span>YOUTUBE</span>
+							</div>
+							<a href="https://www.youtube.com/channel/UCH1eR58BPr41l9e6GdY5rpg" target="_blank" rel="noopener noreferrer" class="watch-btn-red">WATCH ON YOUTUBE</a>
 						</div>
 					</div>
 				</div>
@@ -588,28 +591,25 @@
 		</div>
 
 		<footer class="site-footer">
-			<div class="footer-inner">
+			<div class="footer-top">
 				<div class="footer-brand">
-					<img class="footer-logo" src="logo.png" alt="VTC">
-						<div class="footer-brand-text">
-							<span class="footer-name">Virtual Thrill Championship</span>
-							<span class="footer-tag">A Thrill of the Fight 2 league</span>
-						</div>
+					<span class="footer-logo">VTC</span>
+					<div class="footer-brand-text">
+						<strong>VIRTUAL THRILL CHAMPIONSHIP</strong>
+						<span>A THRILL OF THE FIGHT 2 LEAGUE</span>
 					</div>
+				</div>
 				<nav class="footer-nav" aria-label="Footer">
-					<button type="button" onclick="switchTab(null, 'upcoming'); window.scrollTo(0, 0)">Events</button>
-					<button type="button" onclick="switchTab(null, 'rankings'); window.scrollTo(0, 0)">Rankings</button>
-					<button type="button" onclick="switchTab(null, 'roster'); window.scrollTo(0, 0)">Athletes</button>
-					<button type="button" onclick="switchTab(null, 'watch'); window.scrollTo(0, 0)">Watch</button>
-					<button type="button" onclick="switchTab(null, 'ad'); window.scrollTo(0, 0)">Advertisement</button>
+					<button type="button" onclick="switchTab(null, 'upcoming')">EVENTS</button>
+					<button type="button" onclick="switchTab(null, 'rankings')">RANKINGS</button>
+					<button type="button" onclick="switchTab(null, 'roster')">ATHLETES</button>
+					<button type="button" onclick="switchTab(null, 'watch')">WATCH</button>
 				</nav>
 				<div class="footer-social">
-					<a class="footer-btn" href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer">Discord</a>
+					<a href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer" class="footer-social-btn">DISCORD</a>
+					<a href="https://www.youtube.com/channel/UCH1eR58BPr41l9e6GdY5rpg" target="_blank" rel="noopener noreferrer" class="footer-social-btn">YOUTUBE</a>
 				</div>
 			</div>
-			<p class="footer-note">
-				<b>Community league.</b> VTC is a fan-run league for The Thrill of the Fight 2 and isn&rsquo;t affiliated with the game&rsquo;s developer. Join the Discord to sign up for fight nights.
-			</p>
 		</footer>
 
 		<script src="script.js?v=3"></script>

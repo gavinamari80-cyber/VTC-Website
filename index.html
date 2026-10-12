@@ -2,19 +2,21 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-			<meta name="color-scheme" content="only light">
-				<meta name="supported-color-schemes" content="light">
+			<meta name="color-scheme" content="dark">
+				<meta name="supported-color-schemes" content="dark">
 					<meta name="viewport" content="width=device-width, initial-scale=1.0">
-						<title>VTC</title>
-						<link rel="preconnect" href="https://fonts.googleapis.com">
-							<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-								<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-									<link rel="stylesheet" href="styles.css?v=2">
+						<meta name="description" content="VTC – the premier competitive league hub for The Thrill of the Fight 2. Fight cards, rankings, results and athlete roster.">
+							<title>VTC | Virtual Thrill Championship</title>
+							<link rel="icon" href="logo.png" type="image/png">
+								<link rel="preconnect" href="https://fonts.googleapis.com">
+									<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+										<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+											<link rel="stylesheet" href="styles.css?v=10">
 </head>
 	<body>
 		<header class="ufc-header">
 			<div class="header-container">
-				<nav class="nav-left">
+				<nav class="nav-left" aria-label="Main">
 					<button class="ufc-nav-btn active" onclick="switchTab(event, 'home')">HOME</button>
 					<div class="nav-item-dropdown">
 						<button class="ufc-nav-btn events-hover-btn">EVENTS</button>
@@ -27,13 +29,13 @@
 					<button class="ufc-nav-btn" onclick="switchTab(event, 'roster')">ATHLETES</button>
 				</nav>
 				<div class="logo-center">
-					<!-- Put your logo file in this folder named logo.png and it replaces the text logo automatically -->
+					<!-- Put your logo file named logo.png next to index.html -->
 					<img id="site-logo" class="logo-img" src="logo.png" alt="VTC" hidden="">
 						<svg id="logo-fallback" class="logo-svg" viewBox="0 0 120 44" role="img" aria-label="VTC">
 							<text x="0" y="40" textLength="118" lengthAdjust="spacingAndGlyphs">VTC</text>
 						</svg>
 					</div>
-				<nav class="nav-right">
+				<nav class="nav-right" aria-label="Secondary">
 					<button class="ufc-nav-btn" onclick="switchTab(event, 'ad')">ADVERTISEMENT</button>
 					<button class="ufc-nav-btn" onclick="switchTab(event, 'watch')">WATCH</button>
 					<a href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer" class="ufc-nav-link">CONNECT</a>
@@ -41,16 +43,58 @@
 			</div>
 		</header>
 
+		<div class="ticker-bar" aria-hidden="true">
+			<div class="ticker-track">
+				<span class="ticker-item">
+					<b>VTC</b> · LEAGUE LAUNCHING SOON
+				</span>
+				<span class="ticker-sep">◆</span>
+				<span class="ticker-item">
+					<span class="ticker-badge">SOON</span> AMA 001 · DATE TBD
+				</span>
+				<span class="ticker-sep">◆</span>
+				<span class="ticker-item">
+					<span class="ticker-badge">SOON</span> AMA 002 · DATE TBD
+				</span>
+				<span class="ticker-sep">◆</span>
+				<span class="ticker-item">JOIN THE DISCORD TO SIGN UP FOR FIGHT NIGHTS</span>
+				<span class="ticker-sep">◆</span>
+				<span class="ticker-item">
+					<b>VTC</b> · LEAGUE LAUNCHING SOON
+				</span>
+				<span class="ticker-sep">◆</span>
+				<span class="ticker-item">
+					<span class="ticker-badge">SOON</span> AMA 001 · DATE TBD
+				</span>
+				<span class="ticker-sep">◆</span>
+				<span class="ticker-item">
+					<span class="ticker-badge">SOON</span> AMA 002 · DATE TBD
+				</span>
+				<span class="ticker-sep">◆</span>
+				<span class="ticker-item">JOIN THE DISCORD TO SIGN UP FOR FIGHT NIGHTS</span>
+				<span class="ticker-sep">◆</span>
+			</div>
+		</div>
+
 		<main class="container">
 			<section id="home" class="tab-content active">
-				<div class="hero-banner">
-					<h1>WELCOME TO VTC</h1>
-					<p class="tagline">The official home of fight cards, rankings and results.</p>
-					<div class="hero-buttons">
-						<a href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer" class="hero-btn primary">Join our Discord</a>
-						<button class="hero-btn secondary" onclick="switchTab(null, 'upcoming')">View next event</button>
+				<div class="featured-event">
+					<div class="featured-left">
+						<p class="featured-kicker">VTC · NEXT EVENT</p>
+						<h1 class="featured-title">AMA 001</h1>
+						<p class="featured-meta">AMATEUR SERIES · DATE TO BE ANNOUNCED</p>
+						<p class="featured-desc">
+							The official home of fight cards, rankings and results. The card for AMA 001
+							hasn&rsquo;t been announced yet — join the Discord to sign up.
+						</p>
+						<div class="hero-buttons">
+							<a href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer" class="hero-btn primary">Join our Discord →</a>
+							<button class="hero-btn secondary" onclick="switchTab(null, 'upcoming')">All Events</button>
+						</div>
 					</div>
+					<div class="featured-watermark" aria-hidden="true">VTC</div>
 				</div>
+
 				<div class="info-card">
 					<h3>ABOUT VTC</h3>
 					<p>
@@ -85,7 +129,7 @@
 						<h3 class="watch-how-title">WHERE TO WATCH:</h3>
 						<div class="watch-platform-box">
 							<div class="platform-brand">
-								<svg width="28" height="22" viewBox="0 0 127.14 96.36" fill="#5865F2">
+								<svg width="28" height="22" viewBox="0 0 127.14 96.36" fill="#5865F2" aria-hidden="true">
 									<path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.68,1.76,1.36,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,121.5,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.92,53.87,53,48.81,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.92,96.1,53,91.05,65.69,84.69,65.69Z"/>
 								</svg>
 								<span>DISCORD</span>
@@ -98,193 +142,100 @@
 
 			<section id="ad" class="tab-content">
 				<h2 class="section-title">ADVERTISEMENT</h2>
-				<div class="info-card">
-					<p style="text-align:center;color:#666666;">TBD</p>
+				<div class="info-card empty-state">
+					<p>Sponsorship &amp; ad slots coming soon.</p>
+					<p class="empty-sub">Interested in partnering with VTC? Reach out in Discord.</p>
 				</div>
 			</section>
 
 			<section id="upcoming" class="tab-content">
 				<h2 class="section-title">UPCOMING EVENTS</h2>
 				<div class="events-list-container">
-					<div class="ufc-event-card">
-						<div class="ufc-event-row">
-							<div class="event-logo-col">
-								<div class="event-badge">
-									<svg class="badge-word" viewBox="0 0 120 56" role="img" aria-label="AMA">
-										<text x="0" y="52" textLength="118" lengthAdjust="spacingAndGlyphs">AMA</text>
-									</svg>
-									<div class="badge-sub-row">
-										<span class="badge-rule"></span>
-										<span class="badge-num">001</span>
-									</div>
-								</div>
-							</div>
-							<div class="fighter-carousel-col">
-								<button class="arrow-btn" title="Previous Bout" onclick="prevMatchup('ama001')">❮</button>
-								<div class="matchup-stage">
-									<div class="fighter-avatar f1" data-event="ama001" data-slot="0">
-										<svg viewBox="0 0 100 120" width="100%" height="100%">
-											<circle cx="50" cy="35" r="22" fill="#d0d0d0"/>
-											<path d="M 20 100 Q 50 60 80 100" fill="#d0d0d0"/>
-										</svg>
-									</div>
-									<div class="fighter-avatar f2" data-event="ama001" data-slot="1">
-										<svg viewBox="0 0 100 120" width="100%" height="100%">
-											<circle cx="50" cy="35" r="22" fill="#bcbcbc"/>
-											<path d="M 20 100 Q 50 60 80 100" fill="#bcbcbc"/>
-										</svg>
-									</div>
-								</div>
-								<button class="arrow-btn" title="Next Bout" onclick="nextMatchup('ama001')">❯</button>
-							</div>
-							<div class="event-info-col">
-								<h2 class="bout-title" id="ama001-title">TBD VS TBD</h2>
-								<p class="event-date">TBD</p>
-								<p class="event-venue">Venue TBD</p>
-							</div>
-							<div class="event-actions-col">
-								<button class="action-btn-outline" onclick="switchTab(null, 'watch')">HOW TO WATCH</button>
-								<button class="action-btn-outline" onclick="toggleCardDetails('ama001-fullcard', this)">FIGHT CARD</button>
-							</div>
-						</div>
-						<div id="ama001-fullcard" class="event-card-details">
-							<div class="card-details-inner">
-								<h4>AMA 001 FULL FIGHT CARD</h4>
-								<h5 class="card-section">Main Event</h5>
-								<div class="bout-row">
-									<abbr class="wc">TBD</abbr>
-									<span>
-										<b>TBD</b>
-										<em>vs</em>
-										<b>TBD</b>
-									</span>
-								</div>
-								<h5 class="card-section">Co-Main Event</h5>
-								<div class="bout-row">
-									<abbr class="wc">TBD</abbr>
-									<span>
-										<b>TBD</b>
-										<em>vs</em>
-										<b>TBD</b>
-									</span>
-								</div>
-								<h5 class="card-section">Main Card</h5>
-								<div class="bout-row">
-									<abbr class="wc">TBD</abbr>
-									<span>
-										<b>TBD</b>
-										<em>vs</em>
-										<b>TBD</b>
-									</span>
-								</div>
-								<h5 class="card-section">Undercard</h5>
-								<div class="bout-row">
-									<abbr class="wc">TBD</abbr>
-									<span>
-										<b>TBD</b>
-										<em>vs</em>
-										<b>TBD</b>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="ufc-event-card">
-						<div class="ufc-event-row">
-							<div class="event-logo-col">
-								<div class="event-badge">
-									<svg class="badge-word" viewBox="0 0 120 56" role="img" aria-label="AMA">
-										<text x="0" y="52" textLength="118" lengthAdjust="spacingAndGlyphs">AMA</text>
-									</svg>
-									<div class="badge-sub-row">
-										<span class="badge-rule"></span>
-										<span class="badge-num">002</span>
-									</div>
-								</div>
-							</div>
-							<div class="fighter-carousel-col">
-								<button class="arrow-btn" title="Previous Bout" onclick="prevMatchup('ama002')">❮</button>
-								<div class="matchup-stage">
-									<div class="fighter-avatar f1" data-event="ama002" data-slot="0">
-										<svg viewBox="0 0 100 120" width="100%" height="100%">
-											<circle cx="50" cy="35" r="22" fill="#d0d0d0"/>
-											<path d="M 20 100 Q 50 60 80 100" fill="#d0d0d0"/>
-										</svg>
-									</div>
-									<div class="fighter-avatar f2" data-event="ama002" data-slot="1">
-										<svg viewBox="0 0 100 120" width="100%" height="100%">
-											<circle cx="50" cy="35" r="22" fill="#bcbcbc"/>
-											<path d="M 20 100 Q 50 60 80 100" fill="#bcbcbc"/>
-										</svg>
-									</div>
-								</div>
-								<button class="arrow-btn" title="Next Bout" onclick="nextMatchup('ama002')">❯</button>
-							</div>
-							<div class="event-info-col">
-								<h2 class="bout-title" id="ama002-title">TBD VS TBD</h2>
-								<p class="event-date">TBD</p>
-								<p class="event-venue">Venue TBD</p>
-							</div>
-							<div class="event-actions-col">
-								<button class="action-btn-outline" onclick="switchTab(null, 'watch')">HOW TO WATCH</button>
-								<button class="action-btn-outline" onclick="toggleCardDetails('ama002-fullcard', this)">FIGHT CARD</button>
-							</div>
-						</div>
-						<div id="ama002-fullcard" class="event-card-details">
-							<div class="card-details-inner">
-								<h4>AMA 002 FULL FIGHT CARD</h4>
-								<h5 class="card-section">Main Event</h5>
-								<div class="bout-row">
-									<abbr class="wc">TBD</abbr>
-									<span>
-										<b>TBD</b>
-										<em>vs</em>
-										<b>TBD</b>
-									</span>
-								</div>
-								<h5 class="card-section">Co-Main Event</h5>
-								<div class="bout-row">
-									<abbr class="wc">TBD</abbr>
-									<span>
-										<b>TBD</b>
-										<em>vs</em>
-										<b>TBD</b>
-									</span>
-								</div>
-								<h5 class="card-section">Main Card</h5>
-								<div class="bout-row">
-									<abbr class="wc">TBD</abbr>
-									<span>
-										<b>TBD</b>
-										<em>vs</em>
-										<b>TBD</b>
-									</span>
-								</div>
-								<h5 class="card-section">Undercard</h5>
-								<div class="bout-row">
-									<abbr class="wc">TBD</abbr>
-									<span>
-										<b>TBD</b>
-										<em>vs</em>
-										<b>TBD</b>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
+					<!-- Populated by script.js from eventsData -->
 				</div>
 			</section>
 
 			<section id="past" class="tab-content">
 				<h2 class="section-title">PAST FIGHT CARDS</h2>
-				<div class="info-card">
-					<p style="text-align:center;color:#666666;">No completed fight cards yet.</p>
+				<div class="info-card empty-state">
+					<p>No completed fight cards yet.</p>
+					<p class="empty-sub">Results and full cards will appear here after the first event.</p>
 				</div>
 			</section>
 
 			<section id="rankings" class="tab-content">
 				<h2 class="section-title">RANKINGS</h2>
+
+				<div class="p4p-block">
+					<div class="p4p-header">
+						<p class="division-label">Pound for Pound</p>
+						<h3 class="champ-name">TBD</h3>
+						<p class="champ-tag">#1 Pound-for-Pound</p>
+					</div>
+					<ol class="rank-list p4p-list">
+						<li class="rank-item">
+							<b>1</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>2</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>3</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>4</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>5</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>6</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>7</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>8</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>9</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>10</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>11</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>12</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>13</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>14</b>
+							<span>TBD</span>
+						</li>
+						<li class="rank-item">
+							<b>15</b>
+							<span>TBD</span>
+						</li>
+					</ol>
+				</div>
+
 				<div class="divisions-grid">
 					<div class="division-block">
 						<p class="division-label">Lightweight</p>
@@ -362,7 +313,7 @@
 						</ol>
 					</div>
 					<div class="division-block">
-						<p class="division-label">Middleweight</p>
+						<p class="division-label">Welterweight</p>
 						<h3 class="champ-name">TBD</h3>
 						<p class="champ-tag">Champion</p>
 						<div class="champ-photo">
@@ -437,7 +388,7 @@
 						</ol>
 					</div>
 					<div class="division-block">
-						<p class="division-label">Light Heavyweight</p>
+						<p class="division-label">Middleweight</p>
 						<h3 class="champ-name">TBD</h3>
 						<p class="champ-tag">Champion</p>
 						<div class="champ-photo">
@@ -593,11 +544,14 @@
 				<h2 class="section-title">ACTIVE ROSTER</h2>
 				<p id="roster-hint" class="roster-hint">Click a fighter to see their record.</p>
 				<div id="roster-grid" class="roster-grid"></div>
-				<div id="roster-empty" class="info-card">
-					<p style="text-align:center;color:#666666;">No athletes yet.</p>
+				<div id="roster-empty" class="info-card empty-state">
+					<p>No athletes on the roster yet.</p>
+					<p class="empty-sub">
+						Want to fight? <a href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer">Join the Discord</a> to sign up for upcoming cards.
+					</p>
 				</div>
 				<div class="info-card roster-join">
-					<p style="text-align:center;color:#666666;">
+					<p style="text-align:center;color:var(--muted);">
 						Want to fight? <a href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer" style="color:inherit;font-weight:700;">Join the Discord</a> to sign up for upcoming cards!
 					</p>
 				</div>
@@ -635,11 +589,29 @@
 
 		<footer class="site-footer">
 			<div class="footer-inner">
-				<span class="footer-name">VTC</span>
-				<a class="footer-link" href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer">Join the Discord</a>
+				<div class="footer-brand">
+					<img class="footer-logo" src="logo.png" alt="VTC">
+						<div class="footer-brand-text">
+							<span class="footer-name">Virtual Thrill Championship</span>
+							<span class="footer-tag">A Thrill of the Fight 2 league</span>
+						</div>
+					</div>
+				<nav class="footer-nav" aria-label="Footer">
+					<button type="button" onclick="switchTab(null, 'upcoming'); window.scrollTo(0, 0)">Events</button>
+					<button type="button" onclick="switchTab(null, 'rankings'); window.scrollTo(0, 0)">Rankings</button>
+					<button type="button" onclick="switchTab(null, 'roster'); window.scrollTo(0, 0)">Athletes</button>
+					<button type="button" onclick="switchTab(null, 'watch'); window.scrollTo(0, 0)">Watch</button>
+					<button type="button" onclick="switchTab(null, 'ad'); window.scrollTo(0, 0)">Advertisement</button>
+				</nav>
+				<div class="footer-social">
+					<a class="footer-btn" href="https://discord.gg/wKUY59tKUA" target="_blank" rel="noopener noreferrer">Discord</a>
+				</div>
 			</div>
+			<p class="footer-note">
+				<b>Community league.</b> VTC is a fan-run league for The Thrill of the Fight 2 and isn&rsquo;t affiliated with the game&rsquo;s developer. Join the Discord to sign up for fight nights.
+			</p>
 		</footer>
 
-		<script src="script.js?v=2"></script>
+		<script src="script.js?v=3"></script>
 	</body>
 </html>

@@ -1,4 +1,3 @@
-
 // ===== VTC site script =====
 // All event / fight data lives near the top. Edit here to update the site.
 
@@ -6,17 +5,28 @@
 // Each event needs: id, badge, number, date, venue, matchups (array of "A VS B"), and card sections.
 const eventsData = [
     {
-        id: 'ama001',
-        badge: 'AMA',
+        id: 'aba001',
+        badge: 'ABA',
         number: '001',
-        date: 'TBD',
+        date: 'Sat, Oct 17 · 2:30 PM EST',
         venue: 'Venue TBD',
-        matchups: ['TBD VS TBD'],
+        matchups: ['Bluray VS Vite', 'Cobra Boy VS Flawless Boxing'],
         card: {
-            'Main Event':     [{ wc: 'TBD', a: 'TBD', b: 'TBD' }],
-            'Co-Main Event':  [{ wc: 'TBD', a: 'TBD', b: 'TBD' }],
-            'Main Card':      [{ wc: 'TBD', a: 'TBD', b: 'TBD' }],
-            'Undercard':      [{ wc: 'TBD', a: 'TBD', b: 'TBD' }]
+            'Main Event':     [{ wc: 'LW', a: 'Bluray', b: 'Vite' }],
+            'Co-Main Event':  [{ wc: 'LW', a: 'Cobra Boy', b: 'Flawless Boxing' }],
+            'Main Card': [
+                { wc: 'LW', a: 'Ryan Garcia', b: 'Barty' },
+                { wc: 'CW', a: 'Zatras', b: 'Jackmon' },
+                { wc: 'MW', a: 'Capertic', b: 'Yoshiki' },
+                { wc: 'WW', a: 'Nick Diaz', b: 'BartGiggle' },
+                { wc: 'LW', a: 'Oliveira', b: 'Cisgoat' }
+            ],
+            'Prelims': [
+                { wc: 'MW', a: 'Grayson', b: 'Mad Titan' },
+                { wc: 'LW', a: 'Zac', b: 'Yow' },
+                { wc: 'MW', a: 'Hipposquad', b: 'Nugget' },
+                { wc: 'CW', a: 'KitoTotf', b: 'lobstir' }
+            ]
         }
     },
     {
